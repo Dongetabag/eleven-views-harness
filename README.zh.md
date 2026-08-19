@@ -1,18 +1,20 @@
-# DeepSeek Harness
+# Eleven Views Harness
 
 [English](README.md) | 中文
 
-DeepSeek Harness（`dsh`）是由 [DeepSeek AI](https://deepseek.com) 开发的开源 agent harness（智能体框架）。
+<img src="apps/web/public/eleven-views-logo.png" alt="Eleven Views" width="140">
+
+Eleven Views Harness 是开源 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 的 Eleven Views 品牌发行版，上游项目由 [DeepSeek AI](https://deepseek.com) 开发。它保留上游 `dsh` 运行时、模型提供商支持、插件架构和 MIT 许可证，并将 Eleven Views 视觉身份应用于 Web 体验。
 
 它采用**一切皆插件**的架构，并由 [Cordis](https://github.com/cordiverse/cordis) 驱动，其设计参见论文 [_A Programming Paradigm for Spatiotemporal Composability_](https://github.com/cordiverse/paper)。
 
 ## 开发者预览
 
-DeepSeek Harness 目前处于 _开发者预览_ 阶段，正在快速迭代。**未来将出现破坏兼容性的变更。**
+上游 DeepSeek Harness 项目目前处于 _开发者预览_ 阶段，正在快速迭代。**未来将出现破坏兼容性的变更。**
 
 ## 运行
 
-### 通过 `npm` 运行
+### 通过 `npm` 运行上游版本
 
 安装 `Node.js`，然后运行：
 
@@ -20,15 +22,15 @@ DeepSeek Harness 目前处于 _开发者预览_ 阶段，正在快速迭代。**
 npx @deepseek-ai/dsh web
 ```
 
-该命令默认会在 `http://127.0.0.1:3080` 启动 Web UI，本机启动时还会用默认浏览器打开页面。通过 SSH 启动时只打印宿主机 URL，因为本地转发地址由 SSH 客户端或编辑器持有。传入 `--no-open` 可仅运行服务器而不打开浏览器。详见 [Web UI 指南](docs/user/guide/index.md)。
+该命令运行未品牌化的上游 npm 版本。它默认会在 `http://127.0.0.1:3080` 启动 Web UI，本机启动时还会用默认浏览器打开页面。传入 `--no-open` 可仅运行服务器而不打开浏览器。详见 [Web UI 指南](docs/user/guide/index.md)。
 
 ### 从源码运行
 
 如需从仓库源码运行：
 
 ```sh
-git clone https://github.com/deepseek-ai/deepseek-harness.git
-cd deepseek-harness
+git clone https://github.com/Dongetabag/eleven-views-harness.git
+cd eleven-views-harness
 pnpm install
 pnpm run build
 pnpm dsh web
