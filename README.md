@@ -47,7 +47,9 @@ agent login
 pnpm run cursor:web
 ```
 
-The Cursor preset includes every Standard mode capability and adds `subagent_cursor`. Each call starts a fresh Cursor Agent through ACP in the active session workspace. The Web host approves the child agent's ACP permission requests after the parent delegates the task, so review delegation requests before allowing them. Cursor authentication remains in Cursor's local account storage and no key belongs in this repository.
+This launch selects **Cursor Agent** as the primary provider, hides the built-in DeepSeek route for this launch only, and loads the models available to the authenticated Cursor account into the model selector. Each Harness response starts a fresh non-interactive Cursor run in the launch workspace, with Cursor owning the inner coding loop. No DeepSeek API key is required. Start a new Harness session after switching launch modes because existing sessions retain their original provider.
+
+The Cursor preset also includes `subagent_cursor` for explicit one-shot ACP delegation. Primary runs pass Cursor's `--force` flag and delegated ACP runs approve child permission requests, so review each task before sending it. Cursor authentication remains in Cursor's local account storage and no key belongs in this repository.
 
 If `agent` is not available on `PATH`, set `CURSOR_AGENT_PATH` to the executable path before launch. Cursor editor users can run the same command through **Terminal → Run Task → Eleven Views Harness: Run with Cursor**.
 

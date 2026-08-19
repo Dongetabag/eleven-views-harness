@@ -47,7 +47,9 @@ agent login
 pnpm run cursor:web
 ```
 
-Cursor 模式包含标准模式的全部能力，并增加 `subagent_cursor`。每次调用都会通过 ACP 在当前会话工作区中启动一个全新的 Cursor Agent。父 Agent 委派任务后，Web 主机会批准子 Agent 的 ACP 权限请求，因此请在允许委派前检查任务内容。Cursor 身份验证保留在 Cursor 的本地账户存储中，不应将任何密钥写入本仓库。
+此启动方式会选择 **Cursor Agent** 作为主要 provider，仅为本次启动隐藏内置 DeepSeek route，并把已登录 Cursor 账户可用的模型加载到 model selector 中。每次 Harness 回复都会在启动 workspace 中创建一个新的非交互式 Cursor run，由 Cursor 负责内部 coding loop。不需要 DeepSeek API key。切换启动模式后请新建 Harness session，因为现有 session 会保留原 provider。
+
+Cursor 模式还包含 `subagent_cursor`，用于显式 one-shot ACP 委派。主要 run 会传递 Cursor 的 `--force` 标志，委派 ACP run 会批准子级权限请求，因此发送前请检查每个任务。Cursor 身份验证保留在 Cursor 的本地账户存储中，不应将任何密钥写入本仓库。
 
 如果无法从 `PATH` 运行 `agent`，请在启动前将 `CURSOR_AGENT_PATH` 设置为该可执行文件的路径。Cursor 编辑器用户也可以通过 **Terminal → Run Task → Eleven Views Harness: Run with Cursor** 运行同一个命令。
 

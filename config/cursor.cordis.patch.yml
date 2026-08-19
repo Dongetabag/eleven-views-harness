@@ -1,4 +1,12 @@
 # Select the shipped Cursor preset while retaining the ordinary Web profile.
+- id: llm-deepseek
+  disabled: true
+
+- id: agent-default-model
+  config:
+    provider: cursor-agent
+    model: auto
+
 - id: agent-presets
   config:
     default: cursor

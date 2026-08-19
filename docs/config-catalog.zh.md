@@ -902,6 +902,28 @@ export interface Config {
 
 来源：[`packages/jobs/jobs-local/src/index.ts:31`](../packages/jobs/jobs-local/src/index.ts)
 
+<a id="deepseek-aidsh-llm-cursor-agent"></a>
+
+## `@deepseek-ai/dsh-llm-cursor-agent`
+
+需要：`llm` · `subprocess`
+
+```ts config-catalog
+/** Cursor CLI process configuration. */
+export interface Config {
+  /** Provider id shown by the Harness model selector. */
+  providerName: string
+  /** Cursor Agent executable or PATH name. */
+  command: string
+  /** Workspace used by primary Cursor runs. */
+  cwd?: string
+  /** Let the non-interactive Cursor run execute its own tools without prompts. */
+  force: boolean
+}
+```
+
+来源：[`packages/llm/llm-cursor-agent/src/index.ts:21`](../packages/llm/llm-cursor-agent/src/index.ts)
+
 <a id="deepseek-aidsh-llm-deepseek"></a>
 
 ## `@deepseek-ai/dsh-llm-deepseek`

@@ -243,6 +243,16 @@ describe('the shipped Web composition', () => {
     }
   })
 
+  it('registers Cursor Agent as a selectable primary provider without starting it', () => {
+    const spawn = vi.spyOn(ctx.subprocess, 'spawn')
+    try {
+      expect(ctx.llm.listProviders()).toContainEqual({ id: 'cursor-agent', name: 'Cursor Agent' })
+      expect(spawn).not.toHaveBeenCalled()
+    } finally {
+      spawn.mockRestore()
+    }
+  })
+
   it('composes the full agent from `standard`', async () => {
     const handle = await ctx.agents.create({
       sessionId: SessionId('preset-standard'),
