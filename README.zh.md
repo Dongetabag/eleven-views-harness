@@ -38,6 +38,19 @@ pnpm dsh web
 
 `pnpm run build` 会准备仓库产物。`pnpm dsh web` 会直接使用这些已构建产物，不会重新构建。
 
+### 通过 Cursor Agent 运行
+
+安装并登录 [Cursor Agent CLI](https://cursor.com/docs/cli/using)，然后以 Cursor 模式启动品牌化 Web UI：
+
+```sh
+agent login
+pnpm run cursor:web
+```
+
+Cursor 模式包含标准模式的全部能力，并增加 `subagent_cursor`。每次调用都会通过 ACP 在当前会话工作区中启动一个全新的 Cursor Agent。父 Agent 委派任务后，Web 主机会批准子 Agent 的 ACP 权限请求，因此请在允许委派前检查任务内容。Cursor 身份验证保留在 Cursor 的本地账户存储中，不应将任何密钥写入本仓库。
+
+如果无法从 `PATH` 运行 `agent`，请在启动前将 `CURSOR_AGENT_PATH` 设置为该可执行文件的路径。Cursor 编辑器用户也可以通过 **Terminal → Run Task → Eleven Views Harness: Run with Cursor** 运行同一个命令。
+
 ## 社区与支持
 
 - 欢迎通过 [GitHub Discussions](https://github.com/deepseek-ai/deepseek-harness/discussions) 提交反馈或 bug 报告。

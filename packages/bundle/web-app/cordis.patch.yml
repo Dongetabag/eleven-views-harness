@@ -73,6 +73,16 @@
     - id: workspace
       name: '@deepseek-ai/dsh-workspace'
 
+    # Cursor Agent speaks ACP over stdio. Registration is dormant until the
+    # Cursor preset delegates, so ordinary Web sessions start no Cursor process.
+    - id: subagent-cursor
+      name: '@deepseek-ai/dsh-subagent-acp'
+      config:
+        providerName: cursor
+        command: !!js "process.env.CURSOR_AGENT_PATH ?? 'agent'"
+        args: [acp]
+        permission: allow
+
     - id: session-projection-cache
       name: '@deepseek-ai/dsh-session-projection-cache'
       config:

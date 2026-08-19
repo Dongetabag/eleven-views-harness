@@ -216,12 +216,31 @@ describe('the shipped Web composition', () => {
     }
   })
 
-  it('supplies both shipped presets, and only those, from the system root', async () => {
+  it('supplies every shipped preset, and only those, from the system root', async () => {
     const listed = await ctx.agentPresets.list()
 
-    expect(listed.map(preset => preset.id).sort()).toEqual(['code', 'cordis', 'minimal', 'standard'])
+    expect(listed.map(preset => preset.id).sort()).toEqual(['code', 'cordis', 'cursor', 'minimal', 'standard'])
     expect(listed.every(preset => preset.trust === 'system')).toBe(true)
     expect(ctx.agentPresets.defaultId).toBe('standard')
+  })
+
+  it('keeps Cursor dormant until its preset delegates through ACP', async () => {
+    const spawn = vi.spyOn(ctx.subprocess, 'spawn')
+    const handle = await ctx.agents.create({
+      sessionId: SessionId('preset-cursor'),
+      setup: agentCtx => ctx.agentPresets.mount(agentCtx, 'cursor').then(() => undefined),
+    })
+    try {
+      expect(ctx.subagents.list()).toContain('cursor')
+      expect(toolNames(ctx, handle.agent)).toContain('subagent_cursor')
+      expect(toolParameterNames(ctx, handle.agent, 'subagent_cursor')).toEqual([
+        'description', 'prompt', 'run_in_background',
+      ])
+      expect(spawn).not.toHaveBeenCalled()
+    } finally {
+      await handle.dispose()
+      spawn.mockRestore()
+    }
   })
 
   it('composes the full agent from `standard`', async () => {

@@ -38,6 +38,19 @@ pnpm dsh web
 
 `pnpm run build` prepares the repository artifacts. `pnpm dsh web` uses those built artifacts without rebuilding.
 
+### Run with Cursor Agent
+
+Install and authenticate the [Cursor Agent CLI](https://cursor.com/docs/cli/using), then launch the branded Web UI with the Cursor preset selected:
+
+```sh
+agent login
+pnpm run cursor:web
+```
+
+The Cursor preset includes every Standard mode capability and adds `subagent_cursor`. Each call starts a fresh Cursor Agent through ACP in the active session workspace. The Web host approves the child agent's ACP permission requests after the parent delegates the task, so review delegation requests before allowing them. Cursor authentication remains in Cursor's local account storage and no key belongs in this repository.
+
+If `agent` is not available on `PATH`, set `CURSOR_AGENT_PATH` to the executable path before launch. Cursor editor users can run the same command through **Terminal → Run Task → Eleven Views Harness: Run with Cursor**.
+
 ## Community and support
 
 - Feel free to submit feedback or bug reports through [GitHub Discussions](https://github.com/deepseek-ai/deepseek-harness/discussions).

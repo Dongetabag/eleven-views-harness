@@ -1,0 +1,5 @@
+# Select the shipped Cursor preset while retaining the ordinary Web profile.
+- id: agent-presets
+  config:
+    default: cursor
+    includeUserRoot: true

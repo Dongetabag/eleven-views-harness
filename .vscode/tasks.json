@@ -1,0 +1,44 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Eleven Views Harness: Run with Cursor",
+      "type": "shell",
+      "command": "corepack pnpm run cursor:web",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "eleven-views-harness",
+        "pattern": {
+          "regexp": "^(.*)$",
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^.*cursor:web.*$",
+          "endsPattern": "^dsh web: http://127\\.0\\.0\\.1:[0-9]+$"
+        }
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": false
+      },
+      "runOptions": {
+        "instanceLimit": 1
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "Eleven Views Harness: Build",
+      "type": "shell",
+      "command": "corepack pnpm run build",
+      "problemMatcher": [],
+      "group": "build",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    }
+  ]
+}
