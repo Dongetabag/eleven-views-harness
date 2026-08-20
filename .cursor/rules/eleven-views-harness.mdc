@@ -1,0 +1,14 @@
+---
+description: "Eleven Views Harness development and Cursor ACP workflow"
+alwaysApply: true
+---
+
+# Eleven Views Harness
+
+- Preserve the Eleven Views logo, gold palette, product title, and upstream attribution.
+- Read the applicable `AGENTS.md` files before changing code. Nested instructions take precedence.
+- Use `corepack pnpm run cursor:web` to launch the branded Web UI with the Cursor agent preset selected.
+- Use `corepack pnpm run test:gui` for client visual changes. Run the narrow owning test first for other changes.
+- Never add Cursor, model-provider, MCP, or other credentials to tracked files.
+- `subagent_cursor` starts a fresh Cursor Agent through ACP with the active session workspace. Give it a complete standalone task.
+- Do not start another server on port 3080 when the health check at `http://127.0.0.1:3080` already succeeds.

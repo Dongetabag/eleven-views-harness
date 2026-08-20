@@ -73,6 +73,26 @@
     - id: workspace
       name: '@deepseek-ai/dsh-workspace'
 
+    # Primary Cursor runtime for launches that select the cursor-agent route.
+    # Cursor owns its account login and inner coding loop; no key is copied here.
+    - id: llm-cursor-agent
+      name: '@deepseek-ai/dsh-llm-cursor-agent'
+      config:
+        providerName: cursor-agent
+        command: !!js "process.env.CURSOR_AGENT_PATH ?? 'agent'"
+        cwd: !!js process.cwd()
+        force: true
+
+    # Cursor Agent speaks ACP over stdio. Registration is dormant until the
+    # Cursor preset delegates, so ordinary Web sessions start no Cursor process.
+    - id: subagent-cursor
+      name: '@deepseek-ai/dsh-subagent-acp'
+      config:
+        providerName: cursor
+        command: !!js "process.env.CURSOR_AGENT_PATH ?? 'agent'"
+        args: [acp]
+        permission: allow
+
     - id: session-projection-cache
       name: '@deepseek-ai/dsh-session-projection-cache'
       config:

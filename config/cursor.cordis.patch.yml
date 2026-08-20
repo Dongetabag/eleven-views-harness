@@ -1,0 +1,20 @@
+# Select the shipped Cursor preset while retaining the ordinary Web profile.
+- id: llm-deepseek
+  disabled: true
+
+# Cursor reads image files through its local runtime, so this launch accepts
+# ordinary high-resolution screenshots while retaining the 40-megapixel and
+# encoded-byte limits from the shared attachment backend.
+- id: attachment-local
+  config:
+    maxImageDimension: 4096
+
+- id: agent-default-model
+  config:
+    provider: cursor-agent
+    model: auto
+
+- id: agent-presets
+  config:
+    default: cursor
+    includeUserRoot: true

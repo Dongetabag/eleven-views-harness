@@ -1,0 +1,15 @@
+# The Cursor preset composes Standard mode and adds one Cursor ACP delegation tool.
+- id: standard
+  name: '@deepseek-ai/cordis-plugin-include'
+  config:
+    path: ../standard/agent.cordis.yml
+    patches:
+      - id: delegation
+        insert:
+          - id: tool-subagent-cursor
+            name: '@deepseek-ai/dsh-tool-subagent'
+            config:
+              provider: cursor
+              toolName: subagent_cursor
+              backgroundMode: one-shot
+              maxDepth: provider-managed
