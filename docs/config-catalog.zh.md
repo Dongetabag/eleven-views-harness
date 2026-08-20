@@ -906,7 +906,7 @@ export interface Config {
 
 ## `@deepseek-ai/dsh-llm-cursor-agent`
 
-需要：`llm` · `subprocess`
+需要：`attachments` · `llm` · `subprocess`
 
 ```ts config-catalog
 /** Cursor CLI process configuration. */

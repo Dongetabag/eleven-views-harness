@@ -15,7 +15,7 @@ export { CursorAgentAdapter, cursorPrompt, parseCursorModels } from './adapter.t
 export type { CursorAgentAdapterOptions, CursorAgentResult, CursorCommandResult, CursorCommandRunner } from './adapter.ts'
 
 export const name = 'llm-cursor-agent'
-export const inject = ['llm', 'subprocess']
+export const inject = ['attachments', 'llm', 'subprocess']
 
 /** Cursor CLI process configuration. */
 export interface Config {
@@ -71,6 +71,7 @@ export function apply(ctx: Context, config: Config): void {
     command: config.command,
     cwd,
     force: config.force,
+    attachments: ctx.attachments,
     run,
   }))
 }

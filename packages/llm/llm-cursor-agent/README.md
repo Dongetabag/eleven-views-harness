@@ -21,11 +21,13 @@ Cursor Agent CLI adapter for the Harness LLM seam. It uses the local Cursor acco
 
 The adapter converts the assembled system prompt and full provider-neutral conversation into one standalone task on stdin, then runs `agent --print --output-format json`. Cursor uses its own workspace tools and the Harness stores its final answer as one assistant text block. Harness tool schemas are not forwarded because Cursor owns the inner agent loop.
 
+For image input, the adapter resolves each durable attachment into a private temporary file, adds that directory to the Cursor run with `--add-dir`, and places the absolute file path at the image's position in the conversation. Cursor reads the file with its image capability. Duplicate references share one file, and text-only requests create no temporary directory.
+
 Model discovery runs `agent models` and parses the authenticated account catalog. A failed discovery still advertises `auto`; an actual request then surfaces the Cursor CLI authentication or execution failure.
 
 ## Safety and lifecycle
 
-The command runs through `dsh-subprocess`, so output is bounded and cancellation terminates the managed process tree. Ambient credential-shaped environment variables are scrubbed. Cursor authentication remains in Cursor's own local storage and is not copied into Harness settings.
+The command runs through `dsh-subprocess`, so output is bounded and cancellation terminates the managed process tree. Ambient credential-shaped environment variables are scrubbed. Cursor authentication remains in Cursor's own local storage and is not copied into Harness settings. Image files use a private random directory and owner-only permissions; the adapter removes the directory after the Cursor process ends, including failed runs.
 
 Provider retries are disabled. A Cursor run may already have changed workspace files before reporting a failure, so automatically repeating it would not be safe.
 
@@ -35,7 +37,7 @@ Provider retries are disabled. A Cursor run may already have changed workspace f
 
 #### What the model sees
 
-The Cursor-selected model receives an adapter-authored runtime instruction, the assembled Harness system prompt, and the complete visible conversation with role labels through `agent --print --output-format json`. Harness tool schemas and image bytes are omitted because Cursor owns the inner agent loop and uses the workspace tools supplied by its CLI runtime.
+The Cursor-selected model receives an adapter-authored runtime instruction, the assembled Harness system prompt, and the complete visible conversation with role labels through `agent --print --output-format json`. Each image appears at its conversation position as a temporary absolute file path that Cursor inspects through its CLI runtime. Harness tool schemas are omitted because Cursor owns the inner agent loop.
 
 #### Token effect
 
@@ -62,6 +64,5 @@ The retained final response appends to the next standalone task while the earlie
 ## Known Limitations and Deferred Work
 
 - Each Harness model call starts a fresh Cursor conversation and resends the visible Harness history.
-- The adapter currently advertises text input only.
 - Cursor tool approval is non-interactive when `force: true`; the Harness access-mode selector does not govern Cursor's inner tools.
 - The configured `cwd` is deployment-wide. It does not change when a running Harness session selects a different workspace.

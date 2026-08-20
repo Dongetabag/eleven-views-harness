@@ -904,7 +904,7 @@ Source: [`packages/jobs/jobs-local/src/index.ts:31`](../packages/jobs/jobs-local
 
 ## `@deepseek-ai/dsh-llm-cursor-agent`
 
-Requires: `llm` · `subprocess`
+Requires: `attachments` · `llm` · `subprocess`
 
 ```ts config-catalog
 /** Cursor CLI process configuration. */

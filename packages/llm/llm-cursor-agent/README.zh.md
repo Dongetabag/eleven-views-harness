@@ -21,11 +21,13 @@
 
 适配器把组装后的 system prompt 和完整的 provider-neutral conversation 转换成一个独立任务，通过 stdin 传入，然后运行 `agent --print --output-format json`。Cursor 使用自己的 workspace tools，Harness 则把其最终答案存为一个 assistant text block。Harness tool schemas 不会转发，因为内部 agent loop 由 Cursor 负责。
 
+对于图片输入，适配器会把每个持久附件解析到私有临时文件，通过 `--add-dir` 将该目录添加到 Cursor run，并在图片对应的对话位置放入绝对文件路径。Cursor 使用图片能力读取该文件。重复引用共用一个文件，纯文本请求不会创建临时目录。
+
 模型发现会运行 `agent models` 并解析已登录账户的 catalog。发现失败时仍会公布 `auto`；真正发起请求后会公开 Cursor CLI 的身份验证或执行失败。
 
 ## Safety and lifecycle
 
-命令通过 `dsh-subprocess` 运行，因此输出有界，取消会终止受管进程树。环境中疑似凭据的变量会被清除。Cursor 身份验证仍保留在 Cursor 自己的本地存储中，不会复制到 Harness settings。
+命令通过 `dsh-subprocess` 运行，因此输出有界，取消会终止受管进程树。环境中疑似凭据的变量会被清除。Cursor 身份验证仍保留在 Cursor 自己的本地存储中，不会复制到 Harness settings。图片文件使用私有随机目录和仅限所有者的权限；Cursor 进程结束后，适配器会删除该目录，失败的 run 也不例外。
 
 Provider retries 已禁用。Cursor run 在报告失败前可能已经修改 workspace 文件，因此自动重复执行并不安全。
 
@@ -35,7 +37,7 @@ Provider retries 已禁用。Cursor run 在报告失败前可能已经修改 wor
 
 #### 模型看到的内容
 
-Cursor 所选模型会通过 `agent --print --output-format json` 收到适配器撰写的 runtime 指令、组装后的 Harness system prompt，以及带 role 标签的完整可见对话。Harness tool schemas 和图片字节会被省略，因为内部 agent loop 由 Cursor 负责，并使用其 CLI runtime 提供的 workspace tools。
+Cursor 所选模型会通过 `agent --print --output-format json` 收到适配器撰写的 runtime 指令、组装后的 Harness system prompt，以及带 role 标签的完整可见对话。每张图片都会在其对应的对话位置显示为一个临时绝对文件路径，Cursor 通过其 CLI runtime 检查该文件。Harness tool schemas 会被省略，因为内部 agent loop 由 Cursor 负责。
 
 #### Token 影响
 
@@ -62,6 +64,5 @@ Cursor 的最终文本会转换为一个 Harness assistant block。下次调用�
 ## 已知限制与暂缓事项
 
 - 每次 Harness model call 都会启动一个新的 Cursor conversation，并重新发送可见的 Harness history。
-- 适配器目前只公布 text input 能力。
 - 当 `force: true` 时，Cursor tool approval 为非交互式；Harness access-mode selector 不控制 Cursor 的内部工具。
 - 配置的 `cwd` 属于整个 deployment。运行中的 Harness session 选择其他 workspace 时，它不会随之变化。
